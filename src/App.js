@@ -28,13 +28,19 @@ export default function App() {
   }
 
   function updateNote(text) {
-    setNotes((oldNotes) =>
-      oldNotes.map((oldNote) => {
-        return oldNote.id === currentNoteId
-          ? { ...oldNote, body: text }
-          : oldNote;
-      })
-    );
+    // Put the most recent update note at the top
+    setNotes((oldNotes) => {
+      let updatedVersion = [];
+      for (let note of oldNotes) {
+        if (note.id === currentNoteId) {
+          let newNote = { ...note, body: text };
+          updatedVersion.unshift(newNote);
+        } else {
+          updatedVersion.push(note);
+        }
+      }
+      return updatedVersion;
+    });
   }
 
   function findCurrentNote() {
